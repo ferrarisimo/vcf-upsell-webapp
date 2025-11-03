@@ -1,4 +1,5 @@
 # Arrow × VMware — VCF Value Assessment
+Version 1.0
 
 ## Prerequisiti
 - Azure Subscription
