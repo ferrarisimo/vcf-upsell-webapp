@@ -10,7 +10,7 @@ body {
 /* Components layer: utility riusabili */
 @layer components {
   .card {
-    @apply bg-white rounded-2xl shadow-soft border border-slate-100;
+    @apply bg-white rounded-2xl shadow-soft border border-slate-100 transition-transform hover:shadow-md hover:-translate-y-0.5;
   }
   .btn-primary {
     @apply inline-flex items-center justify-center rounded-xl bg-arrow text-white font-semibold px-6 py-3 hover:bg-arrow-dark transition-colors;
@@ -21,4 +21,7 @@ body {
   .container-xl {
     @apply mx-auto max-w-6xl px-4;
   }
+}
+details summary::-webkit-details-marker {
+  display: none;
 }
