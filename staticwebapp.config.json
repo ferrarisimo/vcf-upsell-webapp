@@ -1,0 +1,8 @@
+{
+  "navigationFallback": { "rewrite": "/index.html" },
+  "responseOverrides": { "401": { "rewrite": "/index.html" } },
+  "auth": { "identityProviders": { } },
+  "routes": [
+    { "route": "/api/*", "methods": ["GET","POST","OPTIONS"], "allowedRoles": ["anonymous"] }
+  ]
+}

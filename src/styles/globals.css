@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { --radius: 16px; }
+
+/* smooth cards */
+.card { @apply bg-white rounded-2xl shadow-soft border border-slate-100; }
+
+/* src/main.tsx */
+import React from 'react'
+import { createRoot } from 'react-dom/client'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Home from './pages/Home'
+import Assessment from './pages/Assessment'
+import Thanks from './pages/Thanks'
+import './styles/globals.css'
+
+const router = createBrowserRouter([
+  { path: '/', element: <Home/> },
+  { path: '/assessment', element: <Assessment/> },
+  { path: '/grazie', element: <Thanks/> },
+])
+
+createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+)
