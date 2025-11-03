@@ -1,19 +1,21 @@
 import { useState } from "react"
 import type { Pillar } from "../types"
+import type { QuestionType } from "../lib/questions"
 
-const colors: Record<Pillar, string> = {
-  "Modern Infrastructure": "text-vmware-blue",
-  "Unified Cloud Experience": "text-emerald-600",
-  "Secure & Resilient": "text-rose-600",
-  "Business Operations": "text-indigo-600",
-}
-
-const OPTIONS = [
-  { value: 1, label: "Non ancora implementato" },
+const OPTIONS_MATURITY = [
+  { value: 1, label: "Non implementato" },
   { value: 2, label: "In valutazione" },
   { value: 3, label: "Parzialmente adottato" },
-  { value: 4, label: "Quasi completo" },
+  { value: 4, label: "Avanzato" },
   { value: 5, label: "Completamente adottato" },
+]
+
+const OPTIONS_NEED = [
+  { value: 1, label: "Nessuna priorità" },
+  { value: 2, label: "Bassa priorità" },
+  { value: 3, label: "Media priorità" },
+  { value: 4, label: "Alta priorità" },
+  { value: 5, label: "Priorità critica" },
 ]
 
 export default function QuestionCard({
@@ -22,6 +24,7 @@ export default function QuestionCard({
   pillar,
   title,
   helper,
+  type,
   onChange,
 }: {
   index: number
@@ -29,9 +32,11 @@ export default function QuestionCard({
   pillar: Pillar
   title: string
   helper?: string
+  type: QuestionType
   onChange: (v: number) => void
 }) {
   const [selected, setSelected] = useState<number | null>(null)
+  const OPTIONS = type === "need" ? OPTIONS_NEED : OPTIONS_MATURITY
 
   function handleSelect(v: number) {
     setSelected(v)
@@ -41,10 +46,8 @@ export default function QuestionCard({
   return (
     <div className="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all">
       <div className="flex items-start justify-between mb-2">
-        <span className={`text-sm font-medium ${colors[pillar]}`}>{pillar}</span>
-        <span className="text-xs text-slate-500">
-          {index}/{total}
-        </span>
+        <span className="text-sm font-medium text-arrow">{pillar}</span>
+        <span className="text-xs text-slate-500">{index}/{total}</span>
       </div>
 
       <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
