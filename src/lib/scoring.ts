@@ -1,25 +1,34 @@
-import type { Pillar, Answer } from '../types'
-export function aggregate(answers: Answer[]){
-  const weights: Record<Pillar, number> = {
-    'Modern Infrastructure': 1,
-    'Unified Cloud Experience': 1,
-    'Secure & Resilient': 1,
-    'Business Operations': 1
+import type { Answer } from "../types"
+
+export function aggregate(answers: Answer[]) {
+  const pillarScores: Record<string, number> = {}
+  const pillarCounts: Record<string, number> = {}
+  const maturityScores: Record<string, number> = {}
+  const needScores: Record<string, number> = {}
+
+  for (const a of answers) {
+    const { pillar, score, type } = a
+
+    // calcolo medio per pillar globale
+    pillarScores[pillar] = (pillarScores[pillar] || 0) + score
+    pillarCounts[pillar] = (pillarCounts[pillar] || 0) + 1
+
+    // separazione per tipo
+    if (type === "maturity") {
+      maturityScores[pillar] = (maturityScores[pillar] || 0) + score
+    } else if (type === "need") {
+      needScores[pillar] = (needScores[pillar] || 0) + score
+    }
   }
-  const sums: Record<Pillar, {sum:number; count:number}> = {
-    'Modern Infrastructure': {sum:0,count:0},
-    'Unified Cloud Experience': {sum:0,count:0},
-    'Secure & Resilient': {sum:0,count:0},
-    'Business Operations': {sum:0,count:0}
+
+  // normalizzazione
+  for (const p of Object.keys(pillarScores)) {
+    pillarScores[p] = pillarScores[p] / pillarCounts[p]
+    if (maturityScores[p]) maturityScores[p] /= pillarCounts[p]
+    if (needScores[p]) needScores[p] /= pillarCounts[p]
   }
-  answers.forEach(a=>{
-    const pillar = a.id.startsWith('mi') ? 'Modern Infrastructure' : a.id.startsWith('uc') ? 'Unified Cloud Experience' : a.id.startsWith('sr') ? 'Secure & Resilient' : 'Business Operations'
-    sums[pillar].sum += a.score
-    sums[pillar].count += 1
-  })
-  const averages = Object.fromEntries(Object.entries(sums).map(([k,v])=> [k, v.count? v.sum/v.count : 0])) as Record<Pillar, number>
-  const total = (Object.entries(averages).reduce((acc,[k,v])=> acc + v*weights[k as Pillar], 0)) / 4
-  return { pillarScores: averages, maturity: total }
+
+  return { pillarScores, maturityScores, needScores }
 }
 
 export function recommendations(pillarScores: Record<Pillar, number>){

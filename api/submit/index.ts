@@ -4,7 +4,7 @@ const connectionString = process.env["AZURE_COMMUNICATION_CONNECTION_STRING"];
 
 export async function post(context, req) {
   try {
-    const { projectName, customer, email, dateISO, answers, pillarScores } = req.body;
+    const { projectName, customer, email, dateISO, answers, pillarScores, maturityScores, needScores } = await req.json();
 
     if (!connectionString) throw new Error("ACS connection string missing");
 
@@ -20,12 +20,26 @@ export async function post(context, req) {
           <p><b>Progetto:</b> ${projectName}</p>
           <p><b>Email:</b> ${email}</p>
           <p><b>Data:</b> ${new Date(dateISO).toLocaleString("it-IT")}</p>
-          <h3>Punteggi per area:</h3>
+          <h3 style="color:#0077cc;">🔹 Maturità attuale</h3>
           <ul>
-            ${Object.entries(pillarScores)
+            ${Object.entries(maturityScores)
+             .map(([pillar, score]) => `<li><b>${pillar}</b>: ${score.toFixed(1)}/5</li>`)
+             .join("")}
+          </ul>
+
+          <h3 style="color:#ff6600;">🔸 Esigenze prioritarie</h3>
+          <ul>
+            ${Object.entries(needScores)
               .map(([pillar, score]) => `<li><b>${pillar}</b>: ${score.toFixed(1)}/5</li>`)
               .join("")}
           </ul>
+
+  <h3 style="color:#444;">📊 Totale complessivo</h3>
+  <ul>
+    ${Object.entries(pillarScores)
+      .map(([pillar, score]) => `<li><b>${pillar}</b>: ${score.toFixed(1)}/5</li>`)
+      .join("")}
+  </ul>
         `,
         plainText: `Cliente: ${customer}\nProgetto: ${projectName}\nPunteggi:\n${Object.entries(pillarScores).map(([p,s])=>`${p}: ${s.toFixed(1)}/5`).join("\n")}`
       },

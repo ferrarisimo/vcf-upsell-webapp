@@ -14,10 +14,10 @@ export default function AssessmentAccordion({ pillar, questions, onChange }: Acc
   const [open, setOpen] = useState(false)
   const [answers, setAnswers] = useState<Answer[]>([])
 
-  function updateAnswer(id: string, score: number) {
+  function updateAnswer(id: string, score: number, type: "maturity" | "need") {
     const updated = answers.some(a => a.id === id)
-      ? answers.map(a => (a.id === id ? { ...a, score } : a))
-      : [...answers, { id, score }]
+      ? answers.map(a => (a.id === id ? { ...a, score, type } : a))
+      : [...answers, { id, score, type }]
     setAnswers(updated)
     onChange(updated)
   }
@@ -51,7 +51,8 @@ export default function AssessmentAccordion({ pillar, questions, onChange }: Acc
                 pillar={pillar}
                 title={q.title}
                 helper={q.helper}
-                onChange={(v) => updateAnswer(q.id, v)}
+                type={q.type}
+                onChange={(v) => updateAnswer(q.id, v, q.type)}
               />
             </div>
           ))}
