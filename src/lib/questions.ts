@@ -1,6 +1,4 @@
-import type { Pillar } from "../types"
-
-export type QuestionType = "maturity" | "need"
+import type { Pillar, QuestionType } from "../types"
 
 export type Question = {
   id: string

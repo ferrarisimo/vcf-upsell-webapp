@@ -1,6 +1,5 @@
 import { useState } from "react"
-import type { Pillar } from "../types"
-import type { QuestionType } from "../lib/questions"
+import type { Pillar, QuestionType } from "../types"
 
 const OPTIONS_MATURITY = [
   { value: 1, label: "Non implementato" },
