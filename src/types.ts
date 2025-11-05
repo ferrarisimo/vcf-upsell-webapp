@@ -14,4 +14,6 @@ export type Submission = {
   notes?: string;
   answers: Answer[];
   pillarScores: Record<Pillar, number>;
+  maturityScores: Record<Pillar, number>;
+  needScores: Record<Pillar, number>;
 };

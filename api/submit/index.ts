@@ -4,7 +4,7 @@ const connectionString = process.env["AZURE_COMMUNICATION_CONNECTION_STRING"];
 
 export async function post(context, req) {
   try {
-    const { projectName, customer, email, dateISO, answers, pillarScores, maturityScores, needScores } = await req.json();
+    const { projectName, customer, email, dateISO, answers, pillarScores, maturityScores = {}, needScores = {} } = await req.json();
 
     if (!connectionString) throw new Error("ACS connection string missing");
 
