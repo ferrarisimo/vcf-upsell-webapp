@@ -1,12 +1,12 @@
 import { useState } from "react"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import QuestionCard from "./QuestionCard"
-import type { Pillar, Answer } from "../types"
+import type { Pillar, Answer, QuestionType } from "../types"
 import { aggregate } from "../lib/scoring"
 
 type AccordionProps = {
   pillar: Pillar
-  questions: { id: string; title: string; helper?: string }[]
+  questions: { id: string; title: string; helper?: string; type: QuestionType }[]
   onChange: (answers: Answer[]) => void
 }
 
@@ -14,10 +14,10 @@ export default function AssessmentAccordion({ pillar, questions, onChange }: Acc
   const [open, setOpen] = useState(false)
   const [answers, setAnswers] = useState<Answer[]>([])
 
-  function updateAnswer(id: string, score: number, type: "maturity" | "need") {
+  function updateAnswer(id: string, score: number, type: QuestionType) {
     const updated = answers.some(a => a.id === id)
       ? answers.map(a => (a.id === id ? { ...a, score, type } : a))
-      : [...answers, { id, score, type }]
+      : [...answers, { id, score, type, pillar }]
     setAnswers(updated)
     onChange(updated)
   }
