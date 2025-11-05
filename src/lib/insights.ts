@@ -1,12 +1,5 @@
-import type { Answer, BaselineContext, Pillar } from "../types"
-import type { Question } from "./questions"
-import { aggregate } from "./scoring"
-
-type NarrativeDetails = {
-  critical: string[]
-  insights: string[]
-  strengths: string[]
-}
+import type { BaselineContext, NarrativeBucket, Pillar } from "../types"
+import { QUESTION_NARRATIVES, QUESTIONS, type Question } from "./questions"
 
 const pillarHooks: Record<Pillar, { gap: string; vcf: string }> = {
   "Modern Infrastructure": {
@@ -50,9 +43,9 @@ function parseVersion(version: string) {
   return match ? Number.parseFloat(match[1]) : undefined
 }
 
-export function buildBaselineNarrative(baseline: BaselineContext, totalCores: number): NarrativeDetails {
+export function buildBaselineNarrative(baseline: BaselineContext, totalCores: number): NarrativeBucket {
   const versionNumber = parseVersion(baseline.currentVersion)
-  const narrative: NarrativeDetails = { critical: [], insights: [], strengths: [] }
+  const narrative: NarrativeBucket = { critical: [], insights: [], strengths: [] }
 
   if (versionNumber && versionNumber < 8) {
     narrative.critical.push(
@@ -87,60 +80,101 @@ export function evaluateAnswer(
   question: Question,
   score: number,
   baseline: BaselineContext,
-  answers: Answer[],
-): NarrativeDetails {
-  const { pillarScores } = aggregate(answers)
+): NarrativeBucket {
   const pillarContext = pillarHooks[question.pillar]
-  const narrative: NarrativeDetails = { critical: [], insights: [], strengths: [] }
+  const narrative: NarrativeBucket = { critical: [], insights: [], strengths: [] }
+  const questionNarrative = QUESTION_NARRATIVES[question.id]
+  const pushFragments = (fragment?: Partial<NarrativeBucket>) => {
+    if (!fragment) return
+    if (fragment.critical?.length) {
+      narrative.critical.push(...fragment.critical)
+    }
+    if (fragment.insights?.length) {
+      narrative.insights.push(...fragment.insights)
+    }
+    if (fragment.strengths?.length) {
+      narrative.strengths.push(...fragment.strengths)
+    }
+  }
 
   if (question.type === "maturity") {
     if (score <= 2) {
       narrative.critical.push(MATURITY_MESSAGES.low(question))
       narrative.critical.push(pillarContext.gap)
       narrative.insights.push(`VCF introduce ${pillarContext.vcf}`)
+      pushFragments(questionNarrative?.low)
     } else if (score === 3) {
       narrative.insights.push(MATURITY_MESSAGES.mid(question))
       narrative.insights.push(`Standardizzare il processo con i blueprint VCF accelera l'evoluzione della release ${baseline.currentVersion}.`)
+      pushFragments(questionNarrative?.mid)
     } else {
       narrative.strengths.push(MATURITY_MESSAGES.high(question))
       narrative.insights.push(`Abbinando VCF a ${question.helper || "le funzionalità native"} puoi scalare in modo uniforme.`)
+      pushFragments(questionNarrative?.high)
     }
   } else {
     if (score >= 4) {
       narrative.critical.push(NEED_MESSAGES.high(question))
       narrative.insights.push(`VCF offre capacità dedicate per rispondere rapidamente a questa richiesta.`)
+      pushFragments(questionNarrative?.high)
     } else if (score === 3) {
       narrative.insights.push(NEED_MESSAGES.mid(question))
       narrative.insights.push(`Pianificare l'adozione VCF subito dopo l'upgrade della release ${baseline.currentVersion} consente un time-to-value rapido.`)
+      pushFragments(questionNarrative?.mid)
     } else {
       narrative.strengths.push(NEED_MESSAGES.low(question))
       narrative.insights.push("VCF può essere introdotto progressivamente per consolidare gli use case futuri.")
+      pushFragments(questionNarrative?.low)
     }
-  }
-
-  const normalizedScore = pillarScores[question.pillar]
-  if (normalizedScore !== undefined && normalizedScore < 3.5) {
-    narrative.critical.push(
-      `Il punteggio medio per ${question.pillar} è ${normalizedScore.toFixed(1)}/5: occorre intervenire per colmare la distanza rispetto ai benchmark VCF.`,
-    )
-  } else if (normalizedScore !== undefined) {
-    narrative.strengths.push(
-      `Il punteggio medio per ${question.pillar} è ${normalizedScore.toFixed(1)}/5: ottima base per sfruttare i servizi cloud-nativi VCF.`,
-    )
   }
 
   return narrative
 }
 
-export function mergeNarratives(items: NarrativeDetails[]): NarrativeDetails {
-  return items.reduce<NarrativeDetails>(
-    (acc, item) => ({
-      critical: [...acc.critical, ...item.critical],
-      insights: [...acc.insights, ...item.insights],
-      strengths: [...acc.strengths, ...item.strengths],
-    }),
+export function mergeNarratives(items: NarrativeBucket[]): NarrativeBucket {
+  return items.reduce<NarrativeBucket>(
+    (acc, item) => {
+      const pushUnique = (target: string[], value: string) => {
+        if (!target.includes(value)) {
+          target.push(value)
+        }
+      }
+
+      item.critical.forEach((entry) => pushUnique(acc.critical, entry))
+      item.insights.forEach((entry) => pushUnique(acc.insights, entry))
+      item.strengths.forEach((entry) => pushUnique(acc.strengths, entry))
+
+      return acc
+    },
     { critical: [], insights: [], strengths: [] },
   )
 }
 
-export type NarrativeBucket = ReturnType<typeof mergeNarratives>
+export type PillarAverageNarrative = {
+  pillar: Pillar
+  tone: "critical" | "positive"
+  message: string
+}
+
+export function buildPillarAverageNarratives(
+  pillarScores: Record<Pillar, number>,
+): PillarAverageNarrative[] {
+  return (Object.entries(pillarScores) as [Pillar, number][]) // keep declaration order for output coherence
+    .filter(([, score]) => Number.isFinite(score))
+    .map(([pillar, score]) => {
+      if (score < 3.5) {
+        return {
+          pillar,
+          tone: "critical" as const,
+          message: `Il punteggio medio per ${pillar} è ${score.toFixed(1)}/5: occorre intervenire per colmare la distanza rispetto ai benchmark VCF.`,
+        }
+      }
+
+      return {
+        pillar,
+        tone: "positive" as const,
+        message: `Il punteggio medio per ${pillar} è ${score.toFixed(1)}/5: ottima base per sfruttare i servizi cloud-nativi VCF.`,
+      }
+    })
+}
+

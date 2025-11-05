@@ -1,3 +1,4 @@
+import type { PillarAverageNarrative } from "../lib/insights"
 import type { BaselineContext, Pillar } from "../types"
 
 type Props = {
@@ -6,9 +7,17 @@ type Props = {
   maturityScores: Record<Pillar, number>
   needScores: Record<Pillar, number>
   totalCores: number
+  pillarNarratives: PillarAverageNarrative[]
 }
 
-export default function ResultSummary({ baseline, pillarScores, maturityScores, needScores, totalCores }: Props) {
+export default function ResultSummary({
+  baseline,
+  pillarScores,
+  maturityScores,
+  needScores,
+  totalCores,
+  pillarNarratives,
+}: Props) {
   const entries = Object.entries(pillarScores) as [Pillar, number][]
   const radarData = entries.map(([pillar, score]) => ({ pillar, score }))
 
@@ -53,6 +62,33 @@ export default function ResultSummary({ baseline, pillarScores, maturityScores, 
             </p>
           </div>
         ))}
+      </div>
+
+      <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-white space-y-4">
+        <header className="flex flex-col gap-1">
+          <h4 className="text-sm font-semibold uppercase tracking-wide text-white/70">Sintesi dei punteggi medi</h4>
+          <p className="text-xs text-white/60">
+            Le note qui sotto riportano lo stato medio per ciascun pilastro considerando l'intero assessment.
+          </p>
+        </header>
+        <ul className="space-y-3">
+          {pillarNarratives.length ? (
+            pillarNarratives.map(({ pillar, tone, message }) => (
+              <li key={pillar} className="flex gap-3">
+                <span
+                  className={`mt-1 h-2.5 w-2.5 rounded-full ${tone === "critical" ? "bg-rose-300" : "bg-emerald-300"}`}
+                  aria-hidden
+                />
+                <div className="space-y-0.5">
+                  <p className="text-[11px] uppercase tracking-wide text-white/60">{pillar}</p>
+                  <p className="text-sm leading-relaxed text-white/90">{message}</p>
+                </div>
+              </li>
+            ))
+          ) : (
+            <li className="text-sm text-white/70">Completare tutte le domande per visualizzare la sintesi.</li>
+          )}
+        </ul>
       </div>
     </div>
   )

@@ -1,0 +1,344 @@
+[
+  {
+    "id": "mi-01",
+    "pillar": "Modern Infrastructure",
+    "title": "Come gestite oggi gli aggiornamenti di host, cluster e componenti VMware?",
+    "type": "maturity",
+    "helper": "Con VCF il ciclo di vita è automatizzato e uniforme su tutta l’infrastruttura.",
+    "narratives": {
+      "low": {
+        "critical": [
+          "Gli aggiornamenti vengono gestiti in modo manuale: la piattaforma rimane esposta a errori e finestre di manutenzione estese."
+        ],
+        "insights": [
+          "L'automazione LCM di VCF coordina patching host, cluster e networking in un unico flusso approvato da VMware."
+        ]
+      },
+      "mid": {
+        "insights": [
+          "State già introducendo procedure strutturate: completare la catena con VCF evita deviazioni operative tra i team."
+        ]
+      },
+      "high": {
+        "strengths": [
+          "Il ciclo di vita è governato con processi solidi: VCF può estendere l'automazione agli strati di rete e storage."
+        ],
+        "insights": [
+          "La standardizzazione VCF evita variazioni quando aprite nuovi domini o siti."
+        ]
+      }
+    }
+  },
+  {
+    "id": "mi-02",
+    "pillar": "Modern Infrastructure",
+    "title": "Avete necessità di ridurre il TCO storage/compute (es. dedup globale, tiering NVMe)?",
+    "type": "need",
+    "helper": "Efficienze di costo grazie a ottimizzazioni integrate in VCF.",
+    "narratives": {
+      "low": {
+        "strengths": [
+          "Il TCO infrastrutturale è sotto controllo: potete pianificare le ottimizzazioni VCF in ottica evolutiva."
+        ],
+        "insights": [
+          "Monitorare gli use case di crescita vi aiuta a identificare quando attivare deduplica e compressione integrate in VCF."
+        ]
+      },
+      "mid": {
+        "insights": [
+          "L'interesse a ridurre il TCO è concreto: VCF introduce policy di efficienza centralizzate su compute e storage."
+        ]
+      },
+      "high": {
+        "critical": [
+          "Il controllo dei costi è prioritario: le ottimizzazioni NVMe e le policy vSAN di VCF offrono risparmi immediatamente attivabili."
+        ],
+        "insights": [
+          "VCF permette di applicare deduplica e tiering coerenti in tutti i cluster, riducendo capex e opex."
+        ]
+      }
+    }
+  },
+  {
+    "id": "mi-03",
+    "pillar": "Modern Infrastructure",
+    "title": "Quanto è semplice per voi attivare nuovi siti o ambienti di test?",
+    "type": "maturity",
+    "helper": "Con VCF il deployment è standardizzato e validato.",
+    "narratives": {
+      "low": {
+        "critical": [
+          "Il provisioning di nuovi ambienti richiede effort manuale elevato: l'espansione rischia di rallentare i progetti."
+        ],
+        "insights": [
+          "I template VCF consentono rollout ripetibili e sicuri per siti edge e ambienti di prova."
+        ]
+      },
+      "mid": {
+        "insights": [
+          "Processi parzialmente automatizzati possono essere completati con i blueprint validati di VCF."
+        ]
+      },
+      "high": {
+        "strengths": [
+          "L'attivazione di nuovi ambienti è già rapida: con VCF potete mantenere coerenza multi-site e governance centralizzata."
+        ],
+        "insights": [
+          "Le API VCF accelerano ulteriormente i rollout Dev/Test e scenari edge."
+        ]
+      }
+    }
+  },
+  {
+    "id": "uc-01",
+    "pillar": "Unified Cloud Experience",
+    "title": "I team IT possono richiedere risorse (VM o container) in modo autonomo?",
+    "type": "maturity",
+    "narratives": {
+      "low": {
+        "critical": [
+          "L'erogazione di risorse è centralizzata sul team infrastrutturale: i tempi di delivery rimangono elevati."
+        ],
+        "insights": [
+          "VCF con Aria e Tanzu abilita cataloghi self-service e policy role-based per i team applicativi."
+        ]
+      },
+      "mid": {
+        "insights": [
+          "Sono presenti primi cataloghi: integrarli con VCF permette governance unificata tra VM e container."
+        ]
+      },
+      "high": {
+        "strengths": [
+          "I team consumano già risorse autonomamente: VCF consolida le experience multi-cloud mantenendo controllo centrale."
+        ],
+        "insights": [
+          "L'integrazione con Tanzu e Aria Operations accelera il rilascio di nuovi servizi digitali."
+        ]
+      }
+    }
+  },
+  {
+    "id": "uc-02",
+    "pillar": "Unified Cloud Experience",
+    "title": "Avete interesse a uniformare la gestione tra on-prem e cloud pubblico?",
+    "type": "need",
+    "narratives": {
+      "low": {
+        "strengths": [
+          "La gestione multi-cloud non è una priorità immediata: potete pianificare roadmap graduali verso VCF."
+        ]
+      },
+      "mid": {
+        "insights": [
+          "L'esigenza di coerenza sta emergendo: VCF offre un control plane comune per workload tradizionali e moderni."
+        ]
+      },
+      "high": {
+        "critical": [
+          "L'allineamento multi-cloud è urgente: VCF fornisce governance e sicurezza coerenti tra ambienti on-prem e hyperscaler."
+        ],
+        "insights": [
+          "Armonizzare policy e compliance con VCF riduce rischi operativi e velocizza lo spostamento dei workload."
+        ]
+      }
+    }
+  },
+  {
+    "id": "uc-03",
+    "pillar": "Unified Cloud Experience",
+    "title": "L’infrastruttura è pronta per workload moderni (container, AI, dati)?",
+    "type": "maturity",
+    "narratives": {
+      "low": {
+        "critical": [
+          "L'infrastruttura non è allineata alle esigenze cloud-native: i team di sviluppo faticano a sperimentare nuovi workload."
+        ],
+        "insights": [
+          "VCF integra Tanzu e servizi dati pronti all'uso per abilitare container e pipeline AI."
+        ]
+      },
+      "mid": {
+        "insights": [
+          "Sono presenti primi progetti moderni: con VCF potete consolidare rete, sicurezza e gestione di cluster Kubernetes."
+        ]
+      },
+      "high": {
+        "strengths": [
+          "La piattaforma è già orientata a workload moderni: VCF offre un'unica governance per scalare in modo coerente."
+        ],
+        "insights": [
+          "Servizi integrati di Tanzu e NSX permettono di industrializzare i carichi AI e dati."
+        ]
+      }
+    }
+  },
+  {
+    "id": "sr-01",
+    "pillar": "Secure & Resilient",
+    "title": "Come proteggete i workload interni da minacce o movimenti laterali?",
+    "type": "maturity",
+    "narratives": {
+      "low": {
+        "critical": [
+          "La protezione è affidata a controlli perimetrali: rimangono esposte minacce laterali all'interno del data center."
+        ],
+        "insights": [
+          "Con VCF attivate micro-segmentazione NSX e automazione delle patch di sicurezza end-to-end."
+        ]
+      },
+      "mid": {
+        "insights": [
+          "Alcune policy sono già attive: estenderle con VCF permette di orchestrare sicurezza coerente su tutta l'infrastruttura."
+        ]
+      },
+      "high": {
+        "strengths": [
+          "La postura di sicurezza è avanzata: VCF consolida gestione e visibilità centralizzata sulle policy."
+        ],
+        "insights": [
+          "Automazioni NSX con VCF consentono risposta rapida a nuove minacce."
+        ]
+      }
+    }
+  },
+  {
+    "id": "sr-02",
+    "pillar": "Secure & Resilient",
+    "title": "Avete necessità di rafforzare la resilienza o il piano di cyber recovery?",
+    "type": "need",
+    "narratives": {
+      "low": {
+        "strengths": [
+          "Resilienza e cyber recovery sono considerate adeguate: VCF può essere inserito per consolidare future esigenze."
+        ]
+      },
+      "mid": {
+        "insights": [
+          "La resilienza è un tema crescente: VCF offre orchestrazione di DR, replica e protezione automatizzata dei workload."
+        ]
+      },
+      "high": {
+        "critical": [
+          "Il rafforzamento del piano di recovery è prioritario: i runbook automatizzati VCF riducono drasticamente il tempo di ripristino."
+        ],
+        "insights": [
+          "Integrare VCF con soluzioni VMware Ransomware Recovery garantisce recovery testati e documentati."
+        ]
+      }
+    }
+  },
+  {
+    "id": "sr-03",
+    "pillar": "Secure & Resilient",
+    "title": "La vostra infrastruttura soddisfa già requisiti di compliance o audit?",
+    "type": "maturity",
+    "narratives": {
+      "low": {
+        "critical": [
+          "I requisiti di compliance vengono soddisfatti manualmente: il rischio di deviazioni e audit findings resta elevato."
+        ],
+        "insights": [
+          "VCF fornisce policy predefinite e report automatici per dimostrare conformità continua."
+        ]
+      },
+      "mid": {
+        "insights": [
+          "Le verifiche sono parzialmente strutturate: con VCF potete automatizzare controlli e remediation basate su policy."
+        ]
+      },
+      "high": {
+        "strengths": [
+          "La compliance è già integrata nei processi: VCF consolida evidenze e audit trail centralizzati."
+        ],
+        "insights": [
+          "Automazioni NSX e Aria Operations semplificano le revisioni periodiche."
+        ]
+      }
+    }
+  },
+  {
+    "id": "bo-01",
+    "pillar": "Business Operations",
+    "title": "Quanto è chiaro oggi il costo e l’utilizzo delle risorse IT per dipartimento o progetto?",
+    "type": "maturity",
+    "narratives": {
+      "low": {
+        "critical": [
+          "La visibilità su costi e consumo risorse è limitata: i budget IT restano poco prevedibili."
+        ],
+        "insights": [
+          "VCF con Aria Operations introduce report showback e modelli predittivi integrati."
+        ]
+      },
+      "mid": {
+        "insights": [
+          "Esistono prime dashboard: consolidarle con VCF permette di condividere metriche affidabili con il business."
+        ]
+      },
+      "high": {
+        "strengths": [
+          "La trasparenza dei costi è già elevata: VCF aggiunge automazione su capacity e budgeting multi-cloud."
+        ],
+        "insights": [
+          "L'integrazione con Aria Cost consente chargeback puntuale per linea di business."
+        ]
+      }
+    }
+  },
+  {
+    "id": "bo-02",
+    "pillar": "Business Operations",
+    "title": "Avete necessità di migliorare la visibilità su capacità e costi?",
+    "type": "need",
+    "narratives": {
+      "low": {
+        "strengths": [
+          "La visibilità attuale è considerata sufficiente: potete pianificare un'adozione VCF focalizzata su altre priorità."
+        ]
+      },
+      "mid": {
+        "insights": [
+          "Serve maggiore visibilità: le analytics di VCF consentono scenari what-if e capacity planning proattivo."
+        ]
+      },
+      "high": {
+        "critical": [
+          "La governance di costi e capacità è urgente: VCF fornisce insight in tempo reale e alert proattivi su sprechi e saturazioni."
+        ],
+        "insights": [
+          "Automatizzare report e previsioni con VCF libera tempo al team per iniziative strategiche."
+        ]
+      }
+    }
+  },
+  {
+    "id": "bo-03",
+    "pillar": "Business Operations",
+    "title": "Utilizzate strumenti per ottimizzare risorse inutilizzate o sottoutilizzate?",
+    "type": "maturity",
+    "narratives": {
+      "low": {
+        "critical": [
+          "Non esistono processi strutturati di ottimizzazione: il rischio di sprechi infrastrutturali rimane elevato."
+        ],
+        "insights": [
+          "VCF abilita suggerimenti automatici di rightsizing e reclaim delle risorse inattive."
+        ]
+      },
+      "mid": {
+        "insights": [
+          "Alcuni strumenti sono presenti: integrarli con VCF consente remediation automatizzate basate su policy."
+        ]
+      },
+      "high": {
+        "strengths": [
+          "L'ottimizzazione è già parte del ciclo operativo: VCF consolida i dati per scalare l'approccio su più domini."
+        ],
+        "insights": [
+          "Le raccomandazioni Aria Operations aiutano a mantenere efficienza costante."
+        ]
+      }
+    }
+  }
+]
