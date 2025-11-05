@@ -1,6 +1,5 @@
-import type { Answer, BaselineContext, NarrativeBucket, Pillar } from "../types"
+import type { BaselineContext, NarrativeBucket, Pillar } from "../types"
 import { QUESTION_NARRATIVES, QUESTIONS, type Question } from "./questions"
-import { aggregate } from "./scoring"
 
 const pillarHooks: Record<Pillar, { gap: string; vcf: string }> = {
   "Modern Infrastructure": {
@@ -81,9 +80,7 @@ export function evaluateAnswer(
   question: Question,
   score: number,
   baseline: BaselineContext,
-  answers: Answer[],
 ): NarrativeBucket {
-  const { pillarScores } = aggregate(answers)
   const pillarContext = pillarHooks[question.pillar]
   const narrative: NarrativeBucket = { critical: [], insights: [], strengths: [] }
   const questionNarrative = QUESTION_NARRATIVES[question.id]
@@ -131,17 +128,6 @@ export function evaluateAnswer(
     }
   }
 
-  const normalizedScore = pillarScores[question.pillar]
-  if (normalizedScore !== undefined && normalizedScore < 3.5) {
-    narrative.critical.push(
-      `Il punteggio medio per ${question.pillar} è ${normalizedScore.toFixed(1)}/5: occorre intervenire per colmare la distanza rispetto ai benchmark VCF.`,
-    )
-  } else if (normalizedScore !== undefined) {
-    narrative.strengths.push(
-      `Il punteggio medio per ${question.pillar} è ${normalizedScore.toFixed(1)}/5: ottima base per sfruttare i servizi cloud-nativi VCF.`,
-    )
-  }
-
   return narrative
 }
 
@@ -162,5 +148,33 @@ export function mergeNarratives(items: NarrativeBucket[]): NarrativeBucket {
     },
     { critical: [], insights: [], strengths: [] },
   )
+}
+
+export type PillarAverageNarrative = {
+  pillar: Pillar
+  tone: "critical" | "positive"
+  message: string
+}
+
+export function buildPillarAverageNarratives(
+  pillarScores: Record<Pillar, number>,
+): PillarAverageNarrative[] {
+  return (Object.entries(pillarScores) as [Pillar, number][]) // keep declaration order for output coherence
+    .filter(([, score]) => Number.isFinite(score))
+    .map(([pillar, score]) => {
+      if (score < 3.5) {
+        return {
+          pillar,
+          tone: "critical" as const,
+          message: `Il punteggio medio per ${pillar} è ${score.toFixed(1)}/5: occorre intervenire per colmare la distanza rispetto ai benchmark VCF.`,
+        }
+      }
+
+      return {
+        pillar,
+        tone: "positive" as const,
+        message: `Il punteggio medio per ${pillar} è ${score.toFixed(1)}/5: ottima base per sfruttare i servizi cloud-nativi VCF.`,
+      }
+    })
 }
 
