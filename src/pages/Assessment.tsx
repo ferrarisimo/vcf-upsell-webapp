@@ -32,7 +32,7 @@ export default function Assessment() {
     })
   }
 
-  const { pillarScores } = aggregate(answers)
+  const { pillarScores, maturityScores, needScores } = aggregate(answers)
   const progress = Math.round((answers.length / QUESTIONS.length) * 100)
 
   async function submitEmail(payload: { email: string; projectName: string; customer: string; notes?: string }) {
@@ -44,6 +44,8 @@ export default function Assessment() {
       notes: payload.notes,
       answers,
       pillarScores,
+      maturityScores,
+      needScores,
     }
     const res = await fetch("/api/submit", {
       method: "POST",
