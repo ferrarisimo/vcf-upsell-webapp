@@ -18,7 +18,6 @@ export default function Home(){
               </p>
               <div className="mt-8 flex gap-3">
                 <Link to="/assessment" className="btn-primary">Inizia il questionario</Link>
-                <a href="#how" className="btn-ghost">Come funziona</a>
               </div>
             </div>
             <div className="card p-6 bg-white/10 border-white/20 backdrop-blur">

@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react"
 import type { Question } from "../lib/questions"
-import type { NarrativeBucket } from "../lib/insights"
+import type { NarrativeBucket } from "../types"
 
 export default function AnswerFeedbackCard({
   question,
