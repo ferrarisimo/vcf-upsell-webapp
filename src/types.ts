@@ -7,6 +7,12 @@ export type Answer = {
   score: number; // 0..5
 };
 
+export type NarrativeBucket = {
+  critical: string[];
+  insights: string[];
+  strengths: string[];
+};
+
 export type BaselineContext = {
   currentVersion: string;
   hosts: number;

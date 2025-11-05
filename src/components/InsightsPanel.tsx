@@ -1,6 +1,6 @@
 import { AlertTriangle, Lightbulb, ShieldCheck } from "lucide-react"
 import type { ReactNode } from "react"
-import type { NarrativeBucket } from "../lib/insights"
+import type { NarrativeBucket } from "../types"
 
 const empty = ["Nessun elemento registrato"]
 

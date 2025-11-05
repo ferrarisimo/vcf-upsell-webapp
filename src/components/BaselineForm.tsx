@@ -1,6 +1,8 @@
 import { useState } from "react"
 import type { BaselineContext } from "../types"
 
+const VERSION_OPTIONS = ["Standard", "Enterprise Plus", "vSphere Foundation"] as const
+
 export default function BaselineForm({ onSubmit }: { onSubmit: (baseline: BaselineContext) => void }) {
   const [form, setForm] = useState({
     currentVersion: "",
@@ -10,7 +12,7 @@ export default function BaselineForm({ onSubmit }: { onSubmit: (baseline: Baseli
   })
   const [error, setError] = useState<string | null>(null)
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = e.target
     setForm((prev) => ({ ...prev, [name]: value }))
   }
@@ -22,7 +24,7 @@ export default function BaselineForm({ onSubmit }: { onSubmit: (baseline: Baseli
     const coresPerCpu = Number(form.coresPerCpu)
 
     if (!form.currentVersion.trim()) {
-      setError("Indica la versione attuale di vSphere/VCF.")
+      setError("Indica la release in produzione.")
       return
     }
     if (!Number.isFinite(hosts) || hosts <= 0) {
@@ -59,15 +61,22 @@ export default function BaselineForm({ onSubmit }: { onSubmit: (baseline: Baseli
       <div className="grid md:grid-cols-2 gap-4">
         <label className="space-y-1">
           <span className="text-sm font-medium text-slate-700">Versione in produzione</span>
-          <input
+          <select
             required
-            type="text"
             name="currentVersion"
             value={form.currentVersion}
             onChange={handleChange}
-            placeholder="Es. vSphere 7.0 U3"
-            className="input"
-          />
+            className="input appearance-none"
+          >
+            <option value="" disabled>
+              Seleziona edizione
+            </option>
+            {VERSION_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
         </label>
         <label className="space-y-1">
           <span className="text-sm font-medium text-slate-700">Numero di host</span>
