@@ -6,6 +6,13 @@ export type Answer = {
   type: QuestionType;
   score: number; // 0..5
 };
+
+export type BaselineContext = {
+  currentVersion: string;
+  hosts: number;
+  cpusPerHost: number;
+  coresPerCpu: number;
+};
 export type Submission = {
   projectName: string;
   customer: string;
