@@ -13,7 +13,7 @@ export default function BaselineOverview({ baseline, totalCores }: { baseline: B
       label: "CPU per host",
       value: baseline.cpusPerHost,
       icon: <Cpu className="w-5 h-5" />,
-      description: `Ogni CPU deve mantenere ≥${baseline.coresPerCpu} core per aderire ai requisiti VCF.`,
+      description: "Ogni CPU deve mantenere ≥16 core per aderire ai requisiti VCF.",
     },
     {
       label: "Core totali",
